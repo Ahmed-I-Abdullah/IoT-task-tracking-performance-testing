@@ -7,6 +7,5 @@ Ensure you have k6 installed on your system. If not, you can install it from [he
 
 Run the scripts by the following command in your terminal:
 ```
-k6 run  -e BASE_API_URL=http://localhost:3000 ./src/roles/superAdmin.js
-```
-This will execute the script `superAdmin.js`. You can replace `superAdmin.js` with the path to any other role you want to run.
+k6 run  -e BASE_API_URL=http://localhost:3000 ./src/index.js
+``
