@@ -130,7 +130,7 @@ export function deleteClinicAdmin(authToken, organizationId, clinicId, userId) {
 export function getClinicAdmins(authToken, organizationId, clinicId) {
   const url = `/api/v1/organizations/${organizationId}/clinics/${clinicId}/admins`;
 
-  session.addHeader('Authorization', `Bearer ${authToken}`);
+  session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.get(url);
 
   // Ensure that the resource fetch was successful (HTTP status 200)
@@ -138,10 +138,59 @@ export function getClinicAdmins(authToken, organizationId, clinicId) {
 
   expect(resp, "Get clinic admins valid JSON response").to.have.validJsonBody();
 
-
   // Ensure that clinic admins records is an array
-  const clinicAdminsRecords = resp.json('data.records');
-  expect(clinicAdminsRecords).to.be.an('array', 'Clinic admins records');
-
+  const clinicAdminsRecords = resp.json("data.records");
+  expect(clinicAdminsRecords).to.be.an("array", "Clinic admins records");
 }
 
+/**
+ * Creates a clinician with the provided email and clinic ID.
+ * @param {string} authToken - The authentication token.
+ * @param {string} email - The email of the clinic admin to be created.
+ * @param {string} organizationId - The ID of the organization.
+ * @param {string} clinicId - The ID of the clinic.
+ * @returns {Object} An object containing the userId, registration token, and registration status.
+ */
+export function createClinician(authToken, email, organizationId, clinicId) {
+  return createUser(
+    authToken,
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/clinicians`,
+    email
+  );
+}
+
+/**
+ * Deletes a clinician with the provided authentication token, organization ID, clinic ID, and user ID.
+ * @param {string} authToken - The authentication token.
+ * @param {string} organizationId - The ID of the organization.
+ * @param {string} clinicId - The ID of the clinic.
+ * @param {string} userId - The ID of the user to be deleted.
+ */
+export function deleteClinician(authToken, organizationId, clinicId, userId) {
+  return deleteUser(
+    authToken,
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/clinicians/${userId}`
+  );
+}
+
+/**
+ * Fetches clinicians for a specific clinic.
+ * @param {string} authToken - The authentication token.
+ * @param {string} organizationId - The ID of the organization.
+ * @param {string} clinicId - The ID of the clinic.
+ */
+export function getClinicians(authToken, organizationId, clinicId) {
+  const url = `/api/v1/organizations/${organizationId}/clinics/${clinicId}/clinicians`;
+
+  session.addHeader("Authorization", `Bearer ${authToken}`);
+  const resp = session.get(url);
+
+  // Ensure that the resource fetch was successful (HTTP status 200)
+  expect(resp.status).to.equal(200);
+
+  expect(resp, "Get clinicians valid JSON response").to.have.validJsonBody();
+
+  // Ensure that clinicians records is an array
+  const cliniciansRecords = resp.json("data.records");
+  expect(cliniciansRecords).to.be.an("array", "Clinicians records");
+}

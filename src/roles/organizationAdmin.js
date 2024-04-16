@@ -17,6 +17,7 @@ import {
   getClinicAdmins,
 } from "../models/user.js";
 import { login, confirmRegister } from "../util/authentication.js";
+import { clinicAdminOperations } from "./clinicAdmin.js";
 
 // Information about the clinic admin
 const CLINIC_ADMIN_INFO = {
@@ -116,15 +117,14 @@ export function organizationAdminOperations(authToken, organizationId) {
       });
     }
 
-    // Login the organization admin
+    // Login the clinic admin
     describe("Login clinic admin", () => {
-      const orgAdminAuthToken = login(
+      const clinicAdminAuthToken = login(
         CLINIC_ADMIN_INFO.email,
         CLINIC_ADMIN_INFO.password
       );
 
-      // TODO:
-      // Call clinic admin scripts here
+      clinicAdminOperations(clinicAdminAuthToken, organizationId, clinicId)
     });
   });
 
