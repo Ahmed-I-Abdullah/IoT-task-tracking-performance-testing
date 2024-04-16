@@ -6,47 +6,26 @@ import {
   deleteOrganization,
   getAllOrganizations,
 } from "../models/organization.js";
-import { login, registerUser } from "../util/authentication.js";
-import { createOrganizationAdmin, createSuperAdmin, deleteOrganizationAdmin } from "../models/user.js";
+import { login, confirmRegister } from "../util/authentication.js";
+import {
+  createOrganizationAdmin,
+  deleteOrganizationAdmin,
+} from "../models/user.js";
+import { organizationAdminOperations } from "./organizationAdmin.js";
 
-// Constants for super admin registration
-const EMAIL = "superadmin@test.com";
-const PASSWORD = "verySecure";
-const USER_FIRST_NAME = "Super";
-const USER_MIDDLE_NAME = "Admin";
-const USER_LAST_NAME = "Test";
 
-// Function to set up the environment
-export function setup() {
-  let authToken = "";
+// Constants for organization admin registration
+const ORGANIZATION_ADMIN_INFO = {
+  email: "orgAdmin@test.com",
+  password: "veryVerySecure",
+  firstName: "Org",
+  middleName: "Admin",
+  lastName: "Test",
+};
 
-  // Set up the super admin user
-  describe(`Setup - Create and authenticate super admin ${EMAIL}`, () => {
-    // Create super admin if not already registered
-    const { registerationToken, isRegistered } = createSuperAdmin(null, EMAIL);
-    if (!isRegistered) {
-      describe("Register a new User", () => {
-        registerUser(
-          registerationToken,
-          USER_FIRST_NAME,
-          USER_MIDDLE_NAME,
-          USER_LAST_NAME,
-          PASSWORD
-        );
-      });
-    }
-
-    // Login the super admin user
-    describe("Login User", () => {
-      authToken = login(EMAIL, PASSWORD);
-    });
-  });
-
-  return authToken;
-}
 
 // Function to perform super admin operations
-export default function superAdminOperations(authToken) {
+export function superAdminOperations(authToken) {
   describe("Super admin CRUD operations on organizations", () => {
     let organizationId = "";
     let orgAdminId = "";
@@ -83,23 +62,43 @@ export default function superAdminOperations(authToken) {
       getAllOrganizations(authToken);
     });
 
-
     // Create an admin for the organization
     describe("Create organization admin", () => {
-      const { userId } = createOrganizationAdmin(
-        authToken,
-        "orgAdmin@test.com",
-        organizationId
-      );
+      const { userId, registerationToken, isRegistered } =
+        createOrganizationAdmin(
+          authToken,
+          ORGANIZATION_ADMIN_INFO.email,
+          organizationId
+        );
       orgAdminId = userId;
-    });
 
+      if (!isRegistered) {
+        describe("Register organization admin", () => {
+          confirmRegister(
+            registerationToken,
+            ORGANIZATION_ADMIN_INFO.firstName,
+            ORGANIZATION_ADMIN_INFO.middleName,
+            ORGANIZATION_ADMIN_INFO.lastName,
+            ORGANIZATION_ADMIN_INFO.password
+          );
+        });
+      }
+
+      // Login the organization admin
+      describe("Login organization admin", () => {
+        const orgAdminAuthToken = login(
+          ORGANIZATION_ADMIN_INFO.email,
+          ORGANIZATION_ADMIN_INFO.password
+        );
+
+        organizationAdminOperations(orgAdminAuthToken, organizationId);
+      });
+    });
 
     // Delete the organization admin
     describe("Delete organization admin", () => {
-        deleteOrganizationAdmin(authToken, organizationId, orgAdminId);
-      });
-
+      deleteOrganizationAdmin(authToken, organizationId, orgAdminId);
+    });
 
     // Delete the organization
     describe("Delete the organization", () => {
