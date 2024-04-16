@@ -64,3 +64,17 @@ export function deleteOrganization(authToken, organizationId) {
   // Ensure that the organization deletion was successful (HTTP status 204)
   expect(resp.status, 'Organization deletion status').to.equal(204);
 }
+
+
+/**
+ * Retrieves all organizations.
+ * @param {string} authToken - The authentication token.
+ */
+export function getAllOrganizations(authToken) {
+    session.addHeader('Authorization', `Bearer ${authToken}`);
+    const resp = session.get('/api/v1/organizations');
+  
+    // Ensure that the resource fetch was successful (HTTP status 200)
+    expect(resp.status, 'Fetch resource status').to.equal(200);
+}
+
