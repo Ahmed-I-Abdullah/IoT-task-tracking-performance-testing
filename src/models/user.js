@@ -31,7 +31,7 @@ export function createUser(authToken, endpoint, email) {
   // Ensure that the registration status is a boolean
   const isRegistered =
     resp.json("data.isRegistered") || resp.json("data.user.isRegistered");
-  expect(isRegistered, "isRegistered").to.be.a("boolean");
+  expect(typeof isRegistered).to.equal("boolean");
 
   // Ensure that the user ID is a valid UUID
   const userId = resp.json("data.id") || resp.json("data.user.id");
