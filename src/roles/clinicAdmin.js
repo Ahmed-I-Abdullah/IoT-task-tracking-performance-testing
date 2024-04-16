@@ -2,6 +2,7 @@ import { describe, expect } from "../util/chaiExpect.js";
 import {
   createClinicTask,
   deleteClinicTask,
+  getClinicPerformance,
   getClinicTasks,
 } from "../models/task.js";
 import {
@@ -16,6 +17,7 @@ import {
   getClinicSensorTask,
   getClinicSensors,
 } from "../models/sensor.js";
+import { clinicianOperations } from "./clinician.js";
 
 // Information about the clinic admin
 const CLINICIAN_INFO = {
@@ -90,6 +92,11 @@ export function clinicAdminOperations(authToken, organizationId, clinicId) {
     expect(testTask).to.equal(taskId);
   });
 
+  // Get clinic performance
+  describe(`Get performance for clinic ${clinicId}`, () => {
+    getClinicPerformance(authToken, organizationId, clinicId);
+  });
+
   // Create clinician
   describe("Create clinician", () => {
     const { userId, registerationToken, isRegistered } = createClinician(
@@ -119,15 +126,17 @@ export function clinicAdminOperations(authToken, organizationId, clinicId) {
         CLINICIAN_INFO.email,
         CLINICIAN_INFO.password
       );
-
-      // TODO:
-      // Call clinic admin scripts here
+      clinicianOperations(clinicianAuthToken, organizationId, clinicId, clinicianId, taskId, authToken);
     });
   });
 
   // get all clinicians
   describe(`Get the clinicians for clinic ${clinicId}`, () => {
     getClinicians(authToken, organizationId, clinicId);
+  });
+
+  describe(`Get performance for clinic ${clinicId}`, () => {
+    getClinicPerformance(authToken, organizationId, clinicId);
   });
 
   // Delete clinic sensor
