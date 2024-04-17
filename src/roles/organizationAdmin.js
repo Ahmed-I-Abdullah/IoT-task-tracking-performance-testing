@@ -18,10 +18,11 @@ import {
 } from "../models/user.js";
 import { login, confirmRegister } from "../util/authentication.js";
 import { clinicAdminOperations } from "./clinicAdmin.js";
+import { randomIntBetween } from "https://jslib.k6.io/k6-utils/1.2.0/index.js";
 
 // Information about the clinic admin
 const CLINIC_ADMIN_INFO = {
-  email: "clinicAdmin@test.com",
+  email: `clinicAdmin${randomIntBetween(1, 100000)}@test.com`,
   password: "veryVerySecure",
   firstName: "Clinic",
   middleName: "Admin",

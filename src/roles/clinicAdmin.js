@@ -18,10 +18,11 @@ import {
   getClinicSensors,
 } from "../models/sensor.js";
 import { clinicianOperations } from "./clinician.js";
+import { randomIntBetween } from "https://jslib.k6.io/k6-utils/1.2.0/index.js";
 
 // Information about the clinic admin
 const CLINICIAN_INFO = {
-  email: "clinician123@test.com",
+  email: `clinician${randomIntBetween(1, 100000)}@test.com`,
   password: "veryVerySecure",
   firstName: "Clinician",
   middleName: "",
