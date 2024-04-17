@@ -1,11 +1,11 @@
 import { describe, expect } from "./util/chaiExpect.js";
 import { login, confirmRegister } from "./util/authentication.js";
 import { createSuperAdmin } from "./models/user.js";
-import { superAdminOperations } from "./roles/superAdmin.js";
+import { randomIntBetween } from "https://jslib.k6.io/k6-utils/1.2.0/index.js";
 
 // Constants for super admin registration
 const SUPER_ADMIN_INFO = {
-  email: "superadmin@test.com",
+  email: `superadmin${randomIntBetween(1, 100000)}@test.com`,
   password: "verySecure",
   firstName: "Super",
   middleName: "Admin",
@@ -43,9 +43,3 @@ export function setup() {
 
   return authToken;
 }
-
-
-export default function runAllRoles(superAdminAuthToken) {
-    superAdminOperations(superAdminAuthToken);
-}
-
