@@ -1,6 +1,7 @@
 import { session } from "../util/session.js";
 import { describe, expect } from "../util/chaiExpect.js";
 import { isValidUUID } from "../util/uuidCheck.js";
+import { deafultRequestParams } from "../util/contants.js";
 
 /**
  * Creates a user with the provided email.
@@ -15,7 +16,8 @@ export function createUser(authToken, endpoint, email) {
     endpoint,
     JSON.stringify({
       email: email,
-    })
+    }),
+    deafultRequestParams
   );
 
   // Ensure that the user creation was successful (HTTP status 201)
@@ -47,7 +49,7 @@ export function createUser(authToken, endpoint, email) {
  */
 export function deleteUser(authToken, endpoint) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
-  const resp = session.delete(endpoint);
+  const resp = session.delete(endpoint, null, deafultRequestParams);
 
   // Ensure that the user deletion was successful (HTTP status 204)
   expect(resp.status, "User deletion status").to.equal(204);
@@ -131,7 +133,7 @@ export function getClinicAdmins(authToken, organizationId, clinicId) {
   const url = `/api/v1/organizations/${organizationId}/clinics/${clinicId}/admins`;
 
   session.addHeader("Authorization", `Bearer ${authToken}`);
-  const resp = session.get(url);
+  const resp = session.get(url, null, deafultRequestParams);
 
   // Ensure that the resource fetch was successful (HTTP status 200)
   expect(resp.status).to.equal(200);
@@ -183,7 +185,7 @@ export function getClinicians(authToken, organizationId, clinicId) {
   const url = `/api/v1/organizations/${organizationId}/clinics/${clinicId}/clinicians`;
 
   session.addHeader("Authorization", `Bearer ${authToken}`);
-  const resp = session.get(url);
+  const resp = session.get(url, null, deafultRequestParams);
 
   // Ensure that the resource fetch was successful (HTTP status 200)
   expect(resp.status).to.equal(200);

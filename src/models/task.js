@@ -1,4 +1,5 @@
 import { describe, expect } from "../util/chaiExpect.js";
+import { deafultRequestParams } from "../util/contants.js";
 import { session } from "../util/session.js";
 import { isValidUUID } from "../util/uuidCheck.js";
 
@@ -9,7 +10,10 @@ import { isValidUUID } from "../util/uuidCheck.js";
  */
 export function getOrganizationTasks(authToken, organizationId) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
-  const resp = session.get(`/api/v1/organizations/${organizationId}/tasks`);
+  const resp = session.get(
+    `/api/v1/organizations/${organizationId}/tasks`,
+    deafultRequestParams
+  );
 
   // Ensure that the resource fetch was successful (HTTP status 200)
   expect(resp.status, "Fetch resource status").to.equal(200);
@@ -26,7 +30,8 @@ export function createOrganizationTask(authToken, organizationId, payload) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.post(
     `/api/v1/organizations/${organizationId}/tasks`,
-    JSON.stringify(payload)
+    JSON.stringify(payload),
+    deafultRequestParams
   );
 
   // Ensure that the organization creation was successful (HTTP status 201)
@@ -48,7 +53,9 @@ export function createOrganizationTask(authToken, organizationId, payload) {
 export function deleteOrganizationTask(authToken, organizationId, taskId) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.delete(
-    `/api/v1/organizations/${organizationId}/tasks/${taskId}`
+    `/api/v1/organizations/${organizationId}/tasks/${taskId}`,
+    null,
+    deafultRequestParams
   );
 
   // Ensure that the task deletion was successful (HTTP status 204)
@@ -64,7 +71,8 @@ export function deleteOrganizationTask(authToken, organizationId, taskId) {
 export function getClinicTasks(authToken, organizationId, clinicId) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.get(
-    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/tasks`
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/tasks`,
+    deafultRequestParams
   );
 
   // Ensure that the resource fetch was successful (HTTP status 200)
@@ -80,7 +88,9 @@ export function getClinicTasks(authToken, organizationId, clinicId) {
 export function deleteClinicTask(authToken, organizationId, clinicId, taskId) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.delete(
-    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/tasks/${taskId}`
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/tasks/${taskId}`,
+    null,
+    deafultRequestParams
   );
 
   // Ensure that the task deletion was successful (HTTP status 204)
@@ -99,7 +109,8 @@ export function createClinicTask(authToken, organizationId, clinicId, payload) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.post(
     `/api/v1/organizations/${organizationId}/clinics/${clinicId}/tasks`,
-    JSON.stringify(payload)
+    JSON.stringify(payload),
+    deafultRequestParams
   );
   // Ensure that the task creation was successful (HTTP status 201)
   expect(resp.status, "Task creation status").to.equal(201);
@@ -118,9 +129,18 @@ export function createClinicTask(authToken, organizationId, clinicId, payload) {
  * @param {string} clinicId - The ID of the clinic.
  * @param {string} clinicianId - The ID of the clinician.
  */
-export function getTaskEntries(authToken, organizationId, clinicId, clinicianId) {
+export function getTaskEntries(
+  authToken,
+  organizationId,
+  clinicId,
+  clinicianId
+) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
-  const resp = session.get(`/api/v1/organizations/${organizationId}/clinics/${clinicId}/clinicians/${clinicianId}/tasks/entries`);
+  const resp = session.get(
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/clinicians/${clinicianId}/tasks/entries`,
+    null,
+    deafultRequestParams
+  );
 
   // Ensure that the resource fetch was successful (HTTP status 200)
   expect(resp.status, "Fetch resource status").to.equal(200);
@@ -135,11 +155,18 @@ export function getTaskEntries(authToken, organizationId, clinicId, clinicianId)
  * @param {Object} payload - The payload containing task details.
  * @returns {string} The ID of the created task entry.
  */
-export function createTaskEntry(authToken, organizationId, clinicId, taskId, payload) {
+export function createTaskEntry(
+  authToken,
+  organizationId,
+  clinicId,
+  taskId,
+  payload
+) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.post(
     `/api/v1/organizations/${organizationId}/clinics/${clinicId}/tasks/${taskId}/entries`,
-    JSON.stringify(payload)
+    JSON.stringify(payload),
+    deafultRequestParams
   );
   // Ensure that the task creation was successful (HTTP status 201)
   expect(resp.status, "Task creation status").to.equal(201);
@@ -158,10 +185,17 @@ export function createTaskEntry(authToken, organizationId, clinicId, taskId, pay
  * @param {string} clinicId - The ID of the clinic.
  * @param {string} taskEntryId - The ID of the task entry to delete.
  */
-export function deleteTaskEntry(authToken, organizationId, clinicId, taskEntryId) {
+export function deleteTaskEntry(
+  authToken,
+  organizationId,
+  clinicId,
+  taskEntryId
+) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.delete(
-    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/tasks/entries/${taskEntryId}`
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/tasks/entries/${taskEntryId}`,
+    null,
+    deafultRequestParams
   );
 
   // Ensure that the task deletion was successful (HTTP status 204)
@@ -176,7 +210,11 @@ export function deleteTaskEntry(authToken, organizationId, clinicId, taskEntryId
  */
 export function getClinicPerformance(authToken, organizationId, clinicId) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
-  const resp = session.get(`/api/v1/organizations/${organizationId}/clinics/${clinicId}/performance?startDate=2024-01-01&endDate=2024-04-28&interval=month`);
+  const resp = session.get(
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/performance?startDate=2024-01-01&endDate=2024-04-28&interval=month`,
+    null,
+    deafultRequestParams
+  );
 
   // Ensure that the resource fetch was successful (HTTP status 200)
   expect(resp.status, "Fetch resource status").to.equal(200);
@@ -189,9 +227,18 @@ export function getClinicPerformance(authToken, organizationId, clinicId) {
  * @param {string} clinicId - The ID of the clinic.
  * @param {string} clinicianId - The ID of the clinician.
  */
-export function getClinicianPerformance(authToken, organizationId, clinicId, clinicianId) {
+export function getClinicianPerformance(
+  authToken,
+  organizationId,
+  clinicId,
+  clinicianId
+) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
-  const resp = session.get(`/api/v1/organizations/${organizationId}/clinics/${clinicId}/clinicians/${clinicianId}/performance?startDate=2024-01-01&endDate=2024-04-28&interval=month`);
+  const resp = session.get(
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/clinicians/${clinicianId}/performance?startDate=2024-01-01&endDate=2024-04-28&interval=month`,
+    null,
+    deafultRequestParams
+  );
 
   // Ensure that the resource fetch was successful (HTTP status 200)
   expect(resp.status, "Fetch resource status").to.equal(200);

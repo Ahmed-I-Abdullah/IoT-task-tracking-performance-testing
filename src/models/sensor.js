@@ -1,4 +1,5 @@
 import { describe, expect } from "../util/chaiExpect.js";
+import { deafultRequestParams } from "../util/contants.js";
 import { session } from "../util/session.js";
 import { isValidUUID } from "../util/uuidCheck.js";
 
@@ -11,7 +12,9 @@ import { isValidUUID } from "../util/uuidCheck.js";
 export function getClinicSensors(authToken, organizationId, clinicId) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.get(
-    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/sensors`
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/sensors`,
+    null,
+    deafultRequestParams
   );
 
   // Ensure that the resource fetch was successful (HTTP status 200)
@@ -33,7 +36,9 @@ export function getClinicSensorTask(
 ) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.get(
-    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/sensors/${sensorId}/task`
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/sensors/${sensorId}/task`,
+    null,
+    deafultRequestParams
   );
 
   // Ensure that the resource fetch was successful (HTTP status 200)
@@ -59,7 +64,8 @@ export function createClinicSensor(
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.post(
     `/api/v1/organizations/${organizationId}/clinics/${clinicId}/sensors`,
-    JSON.stringify(payload)
+    JSON.stringify(payload),
+    deafultRequestParams
   );
 
   // Ensure that the sensor creation was successful (HTTP status 201)
@@ -90,7 +96,8 @@ export function updateClinicSensor(
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.patch(
     `/api/v1/organizations/${organizationId}/clinics/${clinicId}/sensors/${sensorId}`,
-    JSON.stringify(payload)
+    JSON.stringify(payload),
+    deafultRequestParams
   );
 
   // Ensure that the sensor update was successful (HTTP status 200)
@@ -115,7 +122,9 @@ export function deleteClinicSensor(
 ) {
   session.addHeader("Authorization", `Bearer ${authToken}`);
   const resp = session.delete(
-    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/sensors/${sensorId}`
+    `/api/v1/organizations/${organizationId}/clinics/${clinicId}/sensors/${sensorId}`,
+    null,
+    deafultRequestParams
   );
 
   // Ensure that the task deletion was successful (HTTP status 204)

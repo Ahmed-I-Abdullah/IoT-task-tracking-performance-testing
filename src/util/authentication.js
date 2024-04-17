@@ -1,4 +1,5 @@
 import { describe, expect } from "../util/chaiExpect.js";
+import { deafultRequestParams } from "./contants.js";
 import { session } from "./session.js";
 
 /**
@@ -14,7 +15,8 @@ export function login(email, password) {
       email: email,
       password: password,
       deviceId: "1",
-    })
+    }),
+    deafultRequestParams
   );
 
   // Ensure that the login was successful (HTTP status 200)
@@ -50,7 +52,8 @@ export function confirmRegister(
       middleName: middleName,
       lastName: lastName,
       password: password,
-    })
+    }),
+    deafultRequestParams
   );
 
   // Ensure that the registration confirmation was successful (HTTP status 200)
