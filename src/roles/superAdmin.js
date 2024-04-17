@@ -12,11 +12,12 @@ import {
   deleteOrganizationAdmin,
 } from "../models/user.js";
 import { organizationAdminOperations } from "./organizationAdmin.js";
+import { randomIntBetween } from "https://jslib.k6.io/k6-utils/1.2.0/index.js";
 
 
 // Constants for organization admin registration
 const ORGANIZATION_ADMIN_INFO = {
-  email: "orgAdmin@test.com",
+  email: `orgAdmin${randomIntBetween(1, 100000)}@test.com`,
   password: "veryVerySecure",
   firstName: "Org",
   middleName: "Admin",
