@@ -1,9 +1,19 @@
-import { describe, expect } from "./util/chaiExpect.js";
-import { login, confirmRegister } from "./util/authentication.js";
-import { createSuperAdmin } from "./models/user.js";
+import { superAdminOperations } from '../../roles/superAdmin.js';
+import { describe } from "../../util/chaiExpect.js";
 import { randomIntBetween } from "https://jslib.k6.io/k6-utils/1.2.0/index.js";
+import { createSuperAdmin } from '../../models/user.js';
+import { confirmRegister, login } from '../../util/authentication.js';
 
-// Constants for super admin registration
+export const options = {
+  vus: 10,
+  iterations: 10,
+  ext: {
+    loadimpact: {
+      name: '10 Virtual Users Test',
+    },
+  },
+}
+
 const SUPER_ADMIN_INFO = {
   email: `superadmin${randomIntBetween(1, 100000)}@test.com`,
   password: "verySecure",
@@ -12,8 +22,7 @@ const SUPER_ADMIN_INFO = {
   lastName: "Test",
 };
 
-// Function to set up the environment
-export function setup() {
+export default function () {
   let authToken = "";
 
   // Set up the super admin user
@@ -40,6 +49,5 @@ export function setup() {
       authToken = login(SUPER_ADMIN_INFO.email, SUPER_ADMIN_INFO.password);
     });
   });
-
-  return authToken;
+  superAdminOperations(authToken);
 }
